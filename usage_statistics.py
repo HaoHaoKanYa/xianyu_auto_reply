@@ -19,8 +19,8 @@ class UsageStatistics:
     """用户使用统计收集器 - 只统计用户数量"""
 
     def __init__(self):
-        # 默认启用统计
-        self.enabled = True
+        # 默认禁用统计（用户隐私保护）
+        self.enabled = False
         self.api_endpoint = "http://xianyu.zhinianblog.cn/?action=statistics"  # PHP统计接收端点
         self.timeout = 5
         self.retry_count = 1
@@ -151,6 +151,11 @@ usage_stats = UsageStatistics()
 async def report_user_count():
     """报告用户数量统计"""
     try:
+        # 检查统计功能是否启用
+        if not usage_stats.enabled:
+            logger.debug("用户统计功能已禁用，跳过上报")
+            return
+            
         logger.info("正在上报用户统计...")
         success = await usage_stats.report_usage()
         if success:

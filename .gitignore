@@ -93,3 +93,4 @@ yarn-error.log*
 .sass-cache
 .cache
 .next
+README_v1.md
